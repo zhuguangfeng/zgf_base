@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  mysql8:
+    image: mysql:8.0
+    restart: always #mysql挂掉后自动重启
+    command: --default-authentication-plugin=mysql_native_password #登录校验
+    environment:
+      MYSQL_ROOT_PASSWORD: "root" # 配置root用户密码
+    volumes:
+      - ./script/mysql:/docker-entrypoint-initdb.d/  #初始化脚本
+    ports:
+      - "3306:3306"
+  redis:
+    image: 'bitnami/redis:latest'
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=YES
+    ports:
+      - '6379:6379'
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "xpack.security.enabled=false"
+      - "ES_JAVA-OPTS=-Xms84m Xmx512m"
+    ports:
+      - "9201:9200"
