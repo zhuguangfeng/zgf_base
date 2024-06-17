@@ -26,7 +26,7 @@ func (z *ZapLogger) Error(msg string, args ...Field) {
 }
 
 func (z *ZapLogger) toArgs(args []Field) []zap.Field {
-	res := make([]zap.Field, len(args))
+	res := make([]zap.Field, 0, len(args))
 	for _, arg := range args {
 		res = append(res, zap.Any(arg.Key, arg.Val))
 	}

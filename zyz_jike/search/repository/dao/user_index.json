@@ -1,0 +1,15 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "nickname": {
+        "type": "text"
+      },
+      "phone": {
+        "type": "keyword"
+      }
+    }
+  }
+}

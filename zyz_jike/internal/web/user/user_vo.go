@@ -5,3 +5,8 @@ type UserRegisterReq struct {
 	Password   string `json:"password"`
 	RePassword string `json:"re_password"`
 }
+
+type PwdLoginReq struct {
+	Phone    string `json:"phone"`
+	Password string `json:"password"`
+}
