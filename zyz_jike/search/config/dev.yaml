@@ -3,3 +3,27 @@ db:
 
 redis:
   addr: "localhost:6379"
+
+es:
+  url: "http://127.0.0.1:9201"
+  sniff: false
+
+etcd:
+  endpoints:
+    - "localhost:12379"
+grpc:
+  server:
+    port: 8099
+    etcdTTL: 60
+    name: "search"
+  client:
+    payment:
+      target: "etcd:///service/payment"
+    account:
+      target: "etcd:///service/account"
+
+kafka:
+  addr:
+    - "localhost:9094"
+
+

@@ -4,6 +4,7 @@ package main
 
 import (
 	"github.com/google/wire"
+	event "zyz_jike/internal/event/article"
 	"zyz_jike/internal/repository"
 	"zyz_jike/internal/repository/dao"
 	"zyz_jike/internal/service"
@@ -19,9 +20,15 @@ func InitWebServer() *App {
 		ioc.InitLogger,
 		ioc.InitDB,
 		ioc.InitRedis,
+		ioc.InitEtcdClient,
 		ioc.InitGinMiddleware,
 		ioc.InitWebServer,
+		ioc.InitSearchClient,
+		ioc.InitSyncClient,
+		ioc.InitKafka,
+		ioc.InitSyncArticleProducer,
 
+		event.NewSaramaSyncArticleProducer,
 		dao.NewUserDao,
 		dao.NewArticleDao,
 

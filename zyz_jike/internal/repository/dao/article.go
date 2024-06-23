@@ -8,7 +8,7 @@ import (
 )
 
 type ArticleDao interface {
-	InsertArticle(ctx context.Context, article Article) (err error)
+	InsertArticle(ctx context.Context, article Article) (art Article, err error)
 	UpdateArticle(ctx context.Context, article Article) (err error)
 	DeleteArticle(ctx context.Context, ids []int64) error
 	FindArticleById(ctx context.Context, id int64) (Article, error)
@@ -24,8 +24,9 @@ func NewArticleDao(db *gorm.DB) ArticleDao {
 	}
 }
 
-func (dao *GormArticleDao) InsertArticle(ctx context.Context, article Article) (err error) {
-	return dao.db.WithContext(ctx).Create(&article).Error
+func (dao *GormArticleDao) InsertArticle(ctx context.Context, article Article) (art Article, err error) {
+	err = dao.db.WithContext(ctx).Create(&article).Error
+	return article, err
 }
 func (dao *GormArticleDao) UpdateArticle(ctx context.Context, article Article) (err error) {
 	return dao.db.WithContext(ctx).Where("id = ?", article.ID).Updates(&article).Error

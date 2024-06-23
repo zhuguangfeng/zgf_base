@@ -11,4 +11,5 @@ type Article struct {
 	Pic             string   `json:"pic"`
 	Pics            []string `json:"pics"`
 	Status          int8     `json:"status"`
+	CreatedAt       string   `json:"created_at"`
 }

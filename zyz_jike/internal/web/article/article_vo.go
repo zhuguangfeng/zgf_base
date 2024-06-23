@@ -16,3 +16,9 @@ type ArticleVo struct {
 	Pic      string   `json:"pic"`
 	Pics     []string `json:"pics"`
 }
+
+type SearchArticleReq struct {
+	Page       int64  `json:"page"`
+	Size       int64  `json:"size"`
+	Expression string `json:"expression"`
+}

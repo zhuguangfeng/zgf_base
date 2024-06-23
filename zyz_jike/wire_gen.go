@@ -7,10 +7,11 @@
 package main
 
 import (
+	"zyz_jike/internal/event/article"
 	"zyz_jike/internal/repository"
 	"zyz_jike/internal/repository/dao"
 	"zyz_jike/internal/service"
-	"zyz_jike/internal/web/article"
+	article2 "zyz_jike/internal/web/article"
 	"zyz_jike/internal/web/jwt"
 	"zyz_jike/internal/web/user"
 	"zyz_jike/ioc"
@@ -30,8 +31,14 @@ func InitWebServer() *App {
 	userHandler := user.NewUserHandler(handler, userService, logger)
 	articleDao := dao.NewArticleDao(db)
 	articleRepository := repository.NewArticleRepository(articleDao)
-	articleService := service.NewArticleService(articleRepository, userRepository, logger)
-	articleHandler := article.NewArticleHandler(articleService, logger)
+	client := ioc.InitKafka()
+	syncProducer := ioc.InitSyncArticleProducer(client)
+	producer := article.NewSaramaSyncArticleProducer(syncProducer)
+	articleService := service.NewArticleService(articleRepository, userRepository, producer, logger)
+	clientv3Client := ioc.InitEtcdClient()
+	searchServiceClient := ioc.InitSearchClient(clientv3Client)
+	syncServiceClient := ioc.InitSyncClient(clientv3Client)
+	articleHandler := article2.NewArticleHandler(articleService, producer, searchServiceClient, syncServiceClient, logger)
 	engine := ioc.InitWebServer(v, userHandler, articleHandler)
 	app := &App{
 		Server: engine,

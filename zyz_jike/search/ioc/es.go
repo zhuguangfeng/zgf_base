@@ -10,11 +10,13 @@ import (
 
 func InitEsClient() *elastic.Client {
 	type Config struct {
-		Url   string `json:"url"`
-		Sniff bool   `json:"sniff"`
+		Url   string `yaml:"url"`
+		Sniff bool   `yaml:"sniff"`
 	}
 	var cfg Config
 	err := viper.UnmarshalKey("es", &cfg)
+	fmt.Println("11111111111")
+	fmt.Println(cfg)
 	if err != nil {
 		panic(fmt.Errorf("读取Es配置失败 %w", err))
 	}
