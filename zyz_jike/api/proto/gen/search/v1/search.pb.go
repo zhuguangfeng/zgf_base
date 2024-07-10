@@ -81,7 +81,7 @@ type SearchResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	User    *UserResult    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	Article *ArticleResult `protobuf:"bytes,2,opt,name=article,proto3" json:"article,omitempty"`
+	Article *ArticleResult `protobuf:"bytes,2,opt,name=dynamic,proto3" json:"dynamic,omitempty"`
 }
 
 func (x *SearchResponse) Reset() {
@@ -289,7 +289,7 @@ var file_search_v1_search_proto_goTypes = []any{
 }
 var file_search_v1_search_proto_depIdxs = []int32{
 	2, // 0: search.v1.SearchResponse.user:type_name -> search.v1.UserResult
-	3, // 1: search.v1.SearchResponse.article:type_name -> search.v1.ArticleResult
+	3, // 1: search.v1.SearchResponse.dynamic:type_name -> search.v1.ArticleResult
 	4, // 2: search.v1.UserResult.users:type_name -> search.v1.User
 	5, // 3: search.v1.ArticleResult.articles:type_name -> search.v1.Article
 	0, // 4: search.v1.SearchService.Search:input_type -> search.v1.SearchRequest

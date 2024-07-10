@@ -44,7 +44,6 @@ func (repo *articleRepository) GetArticle(ctx context.Context, id int64) (domain
 		return domain.Article{}, err
 	}
 	return repo.toDomain(daoArt), nil
-
 }
 
 func (repo *articleRepository) toEntity(art domain.Article) dao.Article {

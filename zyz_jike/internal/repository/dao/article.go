@@ -40,7 +40,7 @@ func (dao *GormArticleDao) FindArticleById(ctx context.Context, id int64) (Artic
 	return art, err
 }
 
-const TableNameArticle = "article"
+const TableNameArticle = "dynamic"
 
 type stringSlice []string
 

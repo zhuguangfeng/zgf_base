@@ -1,0 +1,7 @@
+es:
+  url: "http://127.0.0.1:9201"
+  sniff: false
+kafka:
+  addr:
+    - "localhost:9094"
+

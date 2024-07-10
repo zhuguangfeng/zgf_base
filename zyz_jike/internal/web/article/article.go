@@ -33,7 +33,7 @@ func NewArticleHandler(artSvc service.ArticleService, syncArtEvent article.Produ
 	}
 }
 func (hdl *ArticleHandler) RegisterRoutes(server *gin.Engine) {
-	appGroup := server.Group("/app/article")
+	appGroup := server.Group("/app/dynamic")
 	{
 		appGroup.POST("/publish", ginx.WrapBodyAndClaims(hdl.PublishArticle))
 		appGroup.GET("/detail", hdl.ArticleDetail)

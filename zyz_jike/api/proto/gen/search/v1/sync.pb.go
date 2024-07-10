@@ -110,7 +110,7 @@ type InputArticleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Article *Article `protobuf:"bytes,1,opt,name=article,proto3" json:"article,omitempty"`
+	Article *Article `protobuf:"bytes,1,opt,name=dynamic,proto3" json:"dynamic,omitempty"`
 }
 
 func (x *InputArticleRequest) Reset() {
@@ -573,7 +573,7 @@ var file_search_v1_sync_proto_goTypes = []any{
 }
 var file_search_v1_sync_proto_depIdxs = []int32{
 	6, // 0: search.v1.InputUserRequest.user:type_name -> search.v1.User
-	7, // 1: search.v1.InputArticleRequest.article:type_name -> search.v1.Article
+	7, // 1: search.v1.InputArticleRequest.dynamic:type_name -> search.v1.Article
 	0, // 2: search.v1.SyncService.InputUser:input_type -> search.v1.InputUserRequest
 	2, // 3: search.v1.SyncService.InputArticle:input_type -> search.v1.InputArticleRequest
 	1, // 4: search.v1.SyncService.InputUser:output_type -> search.v1.InputUserResponse

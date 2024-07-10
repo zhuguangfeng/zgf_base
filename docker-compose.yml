@@ -25,7 +25,7 @@ services:
       - "xpack.security.enabled=false"
       - "ES_JAVA-OPTS=-Xms84m Xmx512m"
     ports:
-      - "9201:9200"
+      - "9200:9200"
   etcd:
     image: "bitnami/etcd:latest"
     restart: always
