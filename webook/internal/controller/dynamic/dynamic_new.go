@@ -6,15 +6,18 @@ import (
 	v1 "webook/api/dynamic/v1"
 	"webook/internal/service"
 	"webook/pkg/ginx"
+	"webook/pkg/logger"
 )
 
 type DynamicControllerV1 struct {
 	svc service.DynamicService
+	l   logger.Logger
 }
 
-func NewDynamicControllerV1(svc service.DynamicService) dynamic.IDynamicV1 {
+func NewDynamicControllerV1(svc service.DynamicService, l logger.Logger) dynamic.IDynamicV1 {
 	return &DynamicControllerV1{
 		svc: svc,
+		l:   l,
 	}
 }
 

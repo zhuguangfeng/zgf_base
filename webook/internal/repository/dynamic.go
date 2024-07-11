@@ -13,9 +13,10 @@ type CacheDynamicRepository struct {
 	cache cache.DynamicCache
 }
 
-func NewDynamicRepository(dao dao.DynamicDao) DynamicRepository {
+func NewDynamicRepository(dao dao.DynamicDao, cache cache.DynamicCache) DynamicRepository {
 	return &CacheDynamicRepository{
-		dao: dao,
+		dao:   dao,
+		cache: cache,
 	}
 }
 
@@ -33,16 +34,20 @@ func (repo *CacheDynamicRepository) CreateDynamic(ctx context.Context, dynamic d
 
 func (repo *CacheDynamicRepository) toDomain(dnm model.Dynamic) domain.Dynamic {
 	return domain.Dynamic{
-		Id:        dnm.Id,
-		Title:     dnm.Title,
-		Content:   dnm.Content,
-		Resources: dnm.Resources,
+		Id:         dnm.BaseModel.ID,
+		Title:      dnm.Title,
+		Content:    dnm.Content,
+		Resources:  dnm.Resources,
+		CreateTime: dnm.CreatedAt,
+		UpdateTime: dnm.UpdatedAt,
 	}
 }
 
 func (repo *CacheDynamicRepository) toDao(dnm domain.Dynamic) model.Dynamic {
 	return model.Dynamic{
-		Id:        dnm.Id,
+		BaseModel: model.BaseModel{
+			ID: dnm.Id,
+		},
 		Title:     dnm.Title,
 		Content:   dnm.Content,
 		Resources: dnm.Resources,

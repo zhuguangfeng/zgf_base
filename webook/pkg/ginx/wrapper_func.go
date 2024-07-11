@@ -21,11 +21,9 @@ func WrapBody[Req any](bizFn func(ctx *gin.Context, req Req) (Result, error)) gi
 		res, err := bizFn(ctx, req)
 		if err != nil {
 			L.Error("执行业务逻辑失败", logger.Error(err))
-
 		}
 		ctx.JSON(http.StatusOK, res)
 	}
-
 }
 
 func WrapBodyAndClaims[Req any, Claims jwt.Claims](bizFn func(ctx *gin.Context, req Req, uc Claims) (Result, error)) gin.HandlerFunc {
