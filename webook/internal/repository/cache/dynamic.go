@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/redis/go-redis/v9"
 	"time"
@@ -23,5 +24,9 @@ func NewDynamicCache(redisCli redis.Cmdable) DynamicCache {
 }
 
 func (cache *RedisDynamicCache) Set(ctx context.Context, dynamic domain.Dynamic) error {
-	return cache.redisCli.Set(ctx, fmt.Sprintf("%s%d", cache.key, dynamic.Id), dynamic, cache.expiration).Err()
+	val, err := json.Marshal(dynamic)
+	if err != nil {
+		return err
+	}
+	return cache.redisCli.Set(ctx, fmt.Sprintf("%s%d", cache.key, dynamic.Id), val, cache.expiration).Err()
 }

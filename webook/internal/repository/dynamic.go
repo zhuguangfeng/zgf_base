@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"webook/internal/domain"
 	"webook/internal/model"
 	"webook/internal/repository/cache"
@@ -27,6 +28,7 @@ func (repo *CacheDynamicRepository) CreateDynamic(ctx context.Context, dynamic d
 	}
 	err = repo.cache.Set(ctx, repo.toDomain(res))
 	if err != nil {
+		fmt.Println(err)
 		//记录日志
 	}
 	return nil
@@ -37,6 +39,7 @@ func (repo *CacheDynamicRepository) toDomain(dnm model.Dynamic) domain.Dynamic {
 		Id:         dnm.BaseModel.ID,
 		Title:      dnm.Title,
 		Content:    dnm.Content,
+		Category:   dnm.Category,
 		Resources:  dnm.Resources,
 		CreateTime: dnm.CreatedAt,
 		UpdateTime: dnm.UpdatedAt,
@@ -51,5 +54,6 @@ func (repo *CacheDynamicRepository) toDao(dnm domain.Dynamic) model.Dynamic {
 		Title:     dnm.Title,
 		Content:   dnm.Content,
 		Resources: dnm.Resources,
+		Category:  dnm.Category,
 	}
 }
