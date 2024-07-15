@@ -3,6 +3,7 @@ package article
 import (
 	"encoding/json"
 	"github.com/IBM/sarama"
+	"time"
 )
 
 const TopicSyncArticle = "sync_article_event"
@@ -12,6 +13,16 @@ type Producer interface {
 }
 type SaramaSyncArticleProducer struct {
 	producer sarama.SyncProducer
+}
+
+type DynamicEvent struct {
+	Id         int64     `json:"id"`
+	Title      string    `json:"title"`
+	Content    string    `json:"content"`
+	Resources  []string  `json:"resources"`
+	Category   int8      `json:"category"` //1图片 2视频
+	CreateTime time.Time `json:"create_time"`
+	UpdateTime time.Time `json:"update_time"`
 }
 
 type ArticleEvent struct {

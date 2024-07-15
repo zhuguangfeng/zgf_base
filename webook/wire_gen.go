@@ -8,6 +8,7 @@ package main
 
 import (
 	"webook/internal/controller/dynamic"
+	"webook/internal/events"
 	"webook/internal/repository"
 	"webook/internal/repository/cache"
 	"webook/internal/repository/dao"
@@ -22,14 +23,22 @@ func InitWebService() *App {
 	v := ioc.InitGinMiddleware(cmdable)
 	db := ioc.InitDB()
 	dynamicDao := dao.NewDynamicDao(db)
+	client := ioc.InitEsClient()
+	dynamicEsDao := dao.NewOlivereDynamicEsDao(client)
 	dynamicCache := cache.NewDynamicCache(cmdable)
-	dynamicRepository := repository.NewDynamicRepository(dynamicDao, dynamicCache)
 	logger := ioc.InitLogger()
-	dynamicService := service.NewDynamicService(dynamicRepository, logger)
+	dynamicRepository := repository.NewDynamicRepository(dynamicDao, dynamicEsDao, dynamicCache, logger)
+	saramaClient := ioc.InitKafka()
+	syncProducer := ioc.InitSaramaSyncProducer(saramaClient)
+	producer := events.NewSaramaProducer(syncProducer)
+	dynamicService := service.NewDynamicService(dynamicRepository, producer, logger)
 	iDynamicV1 := dynamic.NewDynamicControllerV1(dynamicService, logger)
 	engine := ioc.InitWebServer(v, iDynamicV1)
+	dynamicConsumer := events.NewDynamicConsumer(saramaClient, logger, dynamicRepository)
+	v2 := ioc.NewConsumers(dynamicConsumer)
 	app := &App{
-		server: engine,
+		server:    engine,
+		consumers: v2,
 	}
 	return app
 }

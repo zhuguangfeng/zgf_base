@@ -24,7 +24,8 @@ func NewDynamicControllerV1(svc service.DynamicService, l logger.Logger) dynamic
 func (c *DynamicControllerV1) RegisterRoutes(server *gin.Engine) {
 	g := server.Group("/v1/dynamic")
 	{
-		g.POST("/publish", ginx.WrapBody[v1.PublishDynamicReq](c.PublishDynamicV1))
+		g.POST("/publish", ginx.WrapBody[v1.PublishDynamicReq](c.PublishDynamic))
+		g.POST("/search", ginx.WrapBody[v1.SearchDynamicListReq](c.SearchDynamicList))
 	}
 
 }
