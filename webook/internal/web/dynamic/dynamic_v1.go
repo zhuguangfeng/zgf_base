@@ -9,7 +9,7 @@ import (
 	"webook/pkg/logger"
 )
 
-func (c *DynamicControllerV1) PublishDynamic(ctx *gin.Context, req v1.PublishDynamicReq) (ginx.Result, error) {
+func (c *DynamicHandlerV1) PublishDynamic(ctx *gin.Context, req v1.PublishDynamicReq) (ginx.Result, error) {
 	err := c.svc.PublishDynamic(ctx, domain.Dynamic{
 		Title:     req.Title,
 		Content:   req.Content,
@@ -21,16 +21,16 @@ func (c *DynamicControllerV1) PublishDynamic(ctx *gin.Context, req v1.PublishDyn
 		return ginx.Result{
 			Code:    errs.ArticleInternalServerError,
 			Message: "系统错误",
-		}, nil
+		}, err
 	}
 
 	return ginx.Result{
 		Code:    errs.Success,
 		Message: "ok",
-	}, err
+	}, nil
 }
 
-func (c *DynamicControllerV1) SearchDynamicList(ctx *gin.Context, req v1.SearchDynamicListReq) (ginx.Result, error) {
+func (c *DynamicHandlerV1) SearchDynamicList(ctx *gin.Context, req v1.SearchDynamicListReq) (ginx.Result, error) {
 	data, err := c.svc.SearchDynamicPage(ctx, req)
 	if err != nil {
 		return ginx.Result{
@@ -53,7 +53,7 @@ func (c *DynamicControllerV1) SearchDynamicList(ctx *gin.Context, req v1.SearchD
 	}, nil
 }
 
-func (c *DynamicControllerV1) toVo(dnc domain.Dynamic) v1.Dynamic {
+func (c *DynamicHandlerV1) toVo(dnc domain.Dynamic) v1.Dynamic {
 	return v1.Dynamic{
 		Id:         dnc.Id,
 		Title:      dnc.Title,

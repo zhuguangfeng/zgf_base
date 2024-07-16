@@ -4,6 +4,7 @@ import (
 	"github.com/IBM/sarama"
 	"github.com/spf13/viper"
 	"webook/internal/events"
+	"webook/internal/events/dynamic"
 )
 
 func InitKafka() sarama.Client {
@@ -24,7 +25,7 @@ func InitKafka() sarama.Client {
 	return client
 }
 
-func NewConsumers(dynamicConsumer *events.DynamicConsumer) []events.Consumer {
+func NewConsumers(dynamicConsumer *dynamic.DynamicConsumer) []events.Consumer {
 	return []events.Consumer{
 		dynamicConsumer,
 	}

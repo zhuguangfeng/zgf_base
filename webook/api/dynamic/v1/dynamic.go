@@ -22,6 +22,8 @@ type PublishDynamicReq struct {
 	Category  int8     `json:"category"`  //分类
 	Resources []string `json:"resources"` //资源(图片or视频)
 }
+type PublishDynamicRes struct {
+}
 
 // 动态搜索
 type SearchDynamicListReq struct {

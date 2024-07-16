@@ -4,7 +4,7 @@ import (
 	"context"
 	v1 "webook/api/dynamic/v1"
 	"webook/internal/domain"
-	"webook/internal/events"
+	"webook/internal/events/dynamic"
 	"webook/internal/repository"
 	"webook/pkg/logger"
 )
@@ -16,11 +16,11 @@ type DynamicService interface {
 
 type dynamicService struct {
 	repo     repository.DynamicRepository
-	dncEvent events.Producer
+	dncEvent dynamic.Producer
 	l        logger.Logger
 }
 
-func NewDynamicService(repo repository.DynamicRepository, dncEvent events.Producer, l logger.Logger) DynamicService {
+func NewDynamicService(repo repository.DynamicRepository, dncEvent dynamic.Producer, l logger.Logger) DynamicService {
 	return &dynamicService{
 		repo:     repo,
 		dncEvent: dncEvent,
@@ -28,12 +28,12 @@ func NewDynamicService(repo repository.DynamicRepository, dncEvent events.Produc
 	}
 }
 
-func (s *dynamicService) PublishDynamic(ctx context.Context, dynamic domain.Dynamic) error {
-	dnc, err := s.repo.CreateDynamic(ctx, dynamic)
+func (s *dynamicService) PublishDynamic(ctx context.Context, dnm domain.Dynamic) error {
+	dnc, err := s.repo.CreateDynamic(ctx, dnm)
 	if err != nil {
 		return err
 	}
-	dncEvent := events.DynamicEvent{
+	dncEvent := dynamic.DynamicEvent{
 		Id:         dnc.Id,
 		Title:      dnc.Title,
 		Content:    dnc.Content,

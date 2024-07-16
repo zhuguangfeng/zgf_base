@@ -8,13 +8,17 @@ import (
 func main() {
 	initViperWatch()
 	app := InitWebService()
+
 	for _, c := range app.consumers {
 		err := c.Start()
 		if err != nil {
 			panic(err)
 		}
 	}
-	app.server.Run(":7777")
+	err := app.server.Run(":7777")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func initViperWatch() {

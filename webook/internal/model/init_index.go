@@ -1,4 +1,4 @@
-package dao
+package model
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"github.com/olivere/elastic/v7"
 	"golang.org/x/sync/errgroup"
 	"time"
-	"webook/internal/model"
 )
 
 func InitEs(client *elastic.Client) error {
@@ -15,7 +14,7 @@ func InitEs(client *elastic.Client) error {
 	defer cancel()
 	var eg errgroup.Group
 	eg.Go(func() error {
-		return tryCreateIndex(ctx, client, model.DynamicIndexName, model.DynamicIndex)
+		return tryCreateIndex(ctx, client, DynamicIndexName, DynamicIndex)
 	})
 	return eg.Wait()
 }

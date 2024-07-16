@@ -21,6 +21,7 @@ func NewHandler[T any](l logger.Logger, fn func(msg *sarama.ConsumerMessage, eve
 func (h *Handler[T]) Setup(session sarama.ConsumerGroupSession) error {
 	return nil
 }
+
 func (h *Handler[T]) Cleanup(session sarama.ConsumerGroupSession) error {
 	return nil
 }

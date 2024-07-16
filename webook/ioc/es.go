@@ -5,7 +5,7 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/spf13/viper"
 	"time"
-	"webook/internal/repository/dao"
+	"webook/internal/model"
 )
 
 func InitEsClient() *elastic.Client {
@@ -28,7 +28,7 @@ func InitEsClient() *elastic.Client {
 	if err != nil {
 		panic(err)
 	}
-	err = dao.InitEs(client)
+	err = model.InitEs(client)
 	if err != nil {
 		panic(err)
 	}

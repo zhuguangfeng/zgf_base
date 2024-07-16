@@ -1,4 +1,4 @@
-package events
+package dynamic
 
 import (
 	"encoding/json"
@@ -7,6 +7,10 @@ import (
 )
 
 const TopicSyncDynamic = "sync_dynamic_event"
+
+type Producer interface {
+	ProducerSyncDynamicEvent(dnc DynamicEvent) error
+}
 
 type SaramaProducer struct {
 	producer sarama.SyncProducer

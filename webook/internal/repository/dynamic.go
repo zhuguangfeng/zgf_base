@@ -39,7 +39,7 @@ func (repo *CacheDynamicRepository) CreateDynamic(ctx context.Context, dynamic d
 }
 
 func (repo *CacheDynamicRepository) InputDynamic(ctx context.Context, dynamic domain.Dynamic) error {
-	return repo.dncEsDao.InputDynamic(ctx, repo.toDao(dynamic))
+	return repo.dncEsDao.InputDynamic(ctx, repo.toEsDao(dynamic))
 }
 
 func (repo *CacheDynamicRepository) SearchDynamic(ctx context.Context, keyword string, category int8, page, size int) ([]domain.Dynamic, error) {
@@ -54,6 +54,18 @@ func (repo *CacheDynamicRepository) SearchDynamic(ctx context.Context, keyword s
 		}
 	}
 	return res, nil
+}
+
+func (repo *CacheDynamicRepository) toEsDao(dnm domain.Dynamic) model.DynamicEs {
+	return model.DynamicEs{
+		Id:         dnm.Id,
+		Title:      dnm.Title,
+		Content:    dnm.Content,
+		Resources:  dnm.Resources,
+		Category:   dnm.Category,
+		CreateTime: dnm.CreateTime,
+		UpdateTime: dnm.UpdateTime,
+	}
 }
 
 func (repo *CacheDynamicRepository) esToDomain(dnm model.DynamicEs) domain.Dynamic {
