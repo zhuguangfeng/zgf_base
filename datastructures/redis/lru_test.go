@@ -2,20 +2,20 @@ package redis
 
 import (
 	"container/list"
+	"fmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestLru(t *testing.T) {
-	cap := 2
+	maxCap := 3
 	l := list.New()
-	m := make(map[string]*list.Element, cap)
-	lru := NewLru(cap, l, m)
+	m := make(map[string]*list.Element, maxCap)
 
-	lru.Set("k1", "v1")
-	lru.Set("k2", "v2")
-	t.Log(lru.storage)
-	lru.Set("k3", "v3")
-	t.Log(lru.storage["k3"])
-	t.Log(lru.storage["k1"])
+	lru := NewLru(maxCap, l, m)
 
+	err := lru.Set("k1", "v1")
+	assert.NoError(t, err)
+	a, b := lru.Get("k1")
+	fmt.Println(a, b)
 }
