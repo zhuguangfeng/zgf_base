@@ -60,7 +60,7 @@ func (l *Lru) Set(key string, val any) error {
 	if l.Size >= l.Cap {
 		e := l.list.Back()
 		l.list.Remove(e)
-		delKey := e.Value.(*Data).Key
+		delKey := e.Value.(Data).Key
 		delete(l.cacheMap, delKey)
 		l.Size--
 	}
