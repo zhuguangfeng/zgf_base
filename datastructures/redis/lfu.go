@@ -17,10 +17,10 @@ type Entry struct {
 	count int //访问次数
 }
 
-func NewLfu() *Lfu {
+func NewLfu(cap int) *Lfu {
 	return &Lfu{
-		cap:      3,
-		cache:    make(map[string]*list.Element, 3),
+		cap:      cap,
+		cache:    make(map[string]*list.Element),
 		freqList: list.New(),
 	}
 }
@@ -30,7 +30,7 @@ func (l *Lfu) Get(key string) (any, error) {
 	if !ok {
 		return nil, errors.New("cache nil")
 	}
-	entry := v.Value.(Entry)
+	entry := v.Value.(*Entry)
 	entry.count++
 	l.UpdateFreqList(v)
 	return entry.val, nil
@@ -39,7 +39,7 @@ func (l *Lfu) Get(key string) (any, error) {
 func (l *Lfu) Put(key string, val any) {
 	e, ok := l.cache[key]
 	if ok {
-		entry := e.Value.(Entry)
+		entry := e.Value.(*Entry)
 		entry.val = val
 		entry.count++
 		l.UpdateFreqList(e)
@@ -48,23 +48,26 @@ func (l *Lfu) Put(key string, val any) {
 			l.RemoveLeastFrequentlyUsed()
 		}
 		newEntry := Entry{key: key, val: val, count: 1}
-		e := l.freqList.PushFront(newEntry)
+		e := l.freqList.PushFront(&newEntry)
 		l.cache[key] = e
 	}
 }
 
 func (l *Lfu) UpdateFreqList(e *list.Element) {
-	for e.Value.(Entry).count > e.Next().Value.(Entry).count {
-		next := e.Next()
-		l.freqList.MoveAfter(e, next)
-		e = next
+	for e != nil {
+		prev := e.Prev()
+		if prev == nil || e.Value.(*Entry).count <= prev.Value.(*Entry).count {
+			break // 退出循环，因为e已经是第一个元素或频率不比前一个元素高
+		}
+		l.freqList.MoveBefore(e, prev)
+		e = prev
 	}
 }
 
 func (l *Lfu) RemoveLeastFrequentlyUsed() {
 	last := l.freqList.Back()
 	if last != nil {
-		delete(l.cache, last.Value.(Data).Key)
+		delete(l.cache, last.Value.(*Entry).key)
 		l.freqList.Remove(last)
 	}
 }
