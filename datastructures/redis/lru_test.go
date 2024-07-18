@@ -1,25 +1,31 @@
 package redis
 
 import (
-	"container/list"
-	"fmt"
 	"github.com/stretchr/testify/assert"
+	"strconv"
 	"testing"
 )
 
 func TestLru(t *testing.T) {
-	maxCap := 2
-	l := list.New()
-	m := make(map[string]*list.Element, maxCap)
+	cap := 5
+	lru := NewLru(cap)
 
-	lru := NewLru(maxCap, l, m)
+	for i := 1; i <= 5; i++ {
+		err := lru.Put("k"+strconv.Itoa(i), "v"+strconv.Itoa(i))
+		assert.NoError(t, err)
+	}
+	t.Log(lru.cache)
 
-	err := lru.Set("k1", "v1")
+	val, err := lru.Get("k1")
 	assert.NoError(t, err)
-	err2 := lru.Set("k2", "v2")
-	assert.NoError(t, err2)
-	err3 := lru.Set("k3", "v3")
-	assert.NoError(t, err3)
-	a, b := lru.Get("k1")
-	fmt.Println(a, b)
+	assert.Equal(t, val, "v1")
+
+	err = lru.Put("k6", "v6")
+	assert.NoError(t, err)
+
+	t.Log(lru.cache)
+
+	err = lru.Delete("k")
+	assert.EqualError(t, err, "key nil")
+
 }
