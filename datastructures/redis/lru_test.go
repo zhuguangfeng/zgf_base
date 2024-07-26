@@ -14,9 +14,8 @@ func TestLru(t *testing.T) {
 		err := lru.Put("k"+strconv.Itoa(i), "v"+strconv.Itoa(i))
 		assert.NoError(t, err)
 	}
-	t.Log(lru.cache)
 
-	val, err := lru.Get("k1")
+	val, err := lru.Get("2")
 	assert.NoError(t, err)
 	assert.Equal(t, val, "v1")
 
