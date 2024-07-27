@@ -68,6 +68,7 @@ func (l *Lru) Put(key string, val any) error {
 		delete(l.cache, backE.Value.(data).key)
 		l.list.Remove(backE)
 		//容量-1
+		l.cap--
 	}
 	//将新增加的元素推到表头
 	item := data{key: key, val: val}
