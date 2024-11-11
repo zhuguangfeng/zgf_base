@@ -2,7 +2,9 @@
 // Source: github.com/redis/go-redis/v9 (interfaces: Cmdable)
 
 // Package mock_v9 is a generated GoMock package.
-package mock_v9
+package mocks
+
+//mockgen -destination cache/mocks/mock_redis_cmdable.gen.go  github.com/redis/go-redis/v9 Cmdable
 
 import (
 	context "context"

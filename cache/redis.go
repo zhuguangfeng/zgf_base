@@ -24,6 +24,7 @@ func NewRedisCache(client redis.Cmdable) *RedisCache {
 }
 
 func (r *RedisCache) Set(ctx context.Context, key string, val any, expiration time.Duration) error {
+	
 	res, err := r.client.Set(ctx, key, val, expiration).Result()
 	if err != nil {
 		return err
